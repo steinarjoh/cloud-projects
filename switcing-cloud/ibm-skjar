@@ -1,0 +1,20 @@
+#!/bin/bash
+ENV=${1:-rtd}
+case "$ENV" in
+"rtd" | "dev" | "stage" | "prod")
+    echo "Setting IMB terraform & cli to: $ENV"
+    echo " this script does not use -terraform-"
+    export TF_VAR_ibm_bx_api_key="$(cat ~/.ssh/$ENV-ibm)"
+    export TF_VAR_ibm_sl_username="$(cat ~/.ssh/$ENV-ibm-sl-username)"
+    export TF_VAR_ibm_sl_api_key="$(cat ~/.ssh/$ENV-ibm-sl)"
+    ibmcloud config --check-version=false
+    ibmcloud login -g Default -r eu-de --apikey $TF_VAR_ibm_bx_api_key
+#    export KUBECONFIG=/home/steinar/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
+    ibmcloud cs cluster-config $ENV
+    kubectx $ENV
+#    ibmcloud sl init -u $TF_VAR_ibm_sl_username -p $TF_VAR_ibm_sl_api_key
+    ;;
+*)
+    echo "Acceptable values are rtd, dev, stage, and prod"
+    ;;
+esac
