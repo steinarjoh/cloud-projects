@@ -1,0 +1,29 @@
+#!/bin/bash
+ENV=${1:-rtd}
+case "$ENV" in
+# edit the correct project name
+"rtd" | "dev" | "stage" | "prod")
+    echo "Setting IMB terraform & cli to: $ENV"
+# here we set the correct api-key for each project 
+    export TF_VAR_ibm_bx_api_key="$(cat ~/.ssh/$ENV-ibm)"
+    export TF_VAR_ibm_sl_username="$(cat ~/.ssh/$ENV-ibm-sl-username)"
+    export TF_VAR_ibm_sl_api_key="$(cat ~/.ssh/$ENV-ibm-sl)"
+# we do not want any interupts about version number
+    ibmcloud config --check-version=false
+# log in  using the api-key
+    ibmcloud login -g Default -r your region --apikey $TF_VAR_ibm_bx_api_key
+#    export KUBECONFIG=/home/steinar/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
+#    instead of this export KUBECONFIG it's better to set the kubeconfig for all config files.
+#    use  this instead:  https://gist.github.com/dcberg/7e03a8363b30663ad20aeebf4a0f9663
+#    Next line sets and downloads the Kubernetes config in IBMCloud....
+    ibmcloud cs cluster-config $ENV
+#   When using zsh with ohmyzsh it's nice to have the correct project in the prompt.
+#   https://github.com/ahmetb/kubectx using the kubectx
+    kubectx $ENV
+If you need to log into the softlayer uncomment next line
+#    ibmcloud sl init -u $TF_VAR_ibm_sl_username -p $TF_VAR_ibm_sl_api_key
+    ;;
+*)
+    echo "Acceptable values are rtd, dev, stage, and prod or whatever you want"
+    ;;
+esac
