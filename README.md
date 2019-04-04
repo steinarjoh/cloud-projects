@@ -77,7 +77,7 @@ Place the API Key in a single file
 
 3.
 
-Download the ibm-connect file here
+Download the ibm-connect file from this GitHub
 
 ```
 #!/bin/bash
@@ -115,7 +115,7 @@ esac
 Edit the script to your needs. See comments in script.
 
 
-Thanks to
+**Thanks to**
 
 Espen Blikra
 
