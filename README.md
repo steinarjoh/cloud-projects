@@ -28,11 +28,22 @@ source $HOME/.bash_aliases
 source /etc/zsh_command_not_found
 ```
 Consider using the kube-ps1
+
 https://github.com/jonmosco/kube-ps1
+
 in .zshrc ...
 ```
 source $HOME/bin/kube-ps1.sh
 PROMPT='$(kube_ps1)'$PROMPT
+```
+
+Consider using the "merge kubeconfig" 
+
+https://gist.github.com/dcberg/7e03a8363b30663ad20aeebf4a0f9663
+
+in .zshrc ...
+```
+export KUBECONFIG=$(~/bin/iks-merged-config.sh)
 ```
 
 2.
@@ -91,7 +102,7 @@ case "$ENV" in
 #   When using zsh with ohmyzsh it's nice to have the correct project in the prompt.
 #   https://github.com/ahmetb/kubectx using the kubectx
     kubectx $ENV
-If you need to log into the sowtlayer uncomment next line
+If you need to log into the softlayer uncomment next line
 #    ibmcloud sl init -u $TF_VAR_ibm_sl_username -p $TF_VAR_ibm_sl_api_key
     ;;
 *)
@@ -101,20 +112,19 @@ esac
 
 ```
 
-
-Edit the script to your needs. se comments in script
-
-
-
-
+Edit the script to your needs. See comments in script.
 
 
 Thanks to
 
 Espen Blikra
+
 https://github.com/ahmetb
+
 https://gist.github.com/dcberg
+
 https://gist.github.com/robbyrussell
+
 https://gist.github.com/jonmosco
 
 
