@@ -60,11 +60,11 @@ Create "classic infrastructure API Key"
 
 Refere this to a singlelayer key (add the key in the file)
 
--> export TF_VAR_ibm_sl_api_key="$(cat ~/.api/$ENV-ibm-sl)"'
+-> export TF_VAR_ibm_sl_api_key="$(cat ~/.ssh/$ENV-ibm-sl)"'
 
 Place the username in a separate file
 
--> export TF_VAR_ibm_sl_username="$(cat ~/.api/$ENV-ibm-sl-username)"
+-> export TF_VAR_ibm_sl_username="$(cat ~/.ssh/$ENV-ibm-sl-username)"
 
 The username is fount in "details" for the "classic infrastructure API Key"
 
