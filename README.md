@@ -94,7 +94,7 @@ case "$ENV" in
     ibmcloud config --check-version=false
 # log in  using the api-key
     ibmcloud login -g Default -r eu-de --apikey $TF_VAR_ibm_bx_api_key
-#    export KUBECONFIG=/home/steinar/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
+#    export KUBECONFIG=~/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
 #    instead of this export KUBECONFIG it's better to set the kubeconfig for all config files.
 #    use  this instead:  https://gist.github.com/dcberg/7e03a8363b30663ad20aeebf4a0f9663
 #    Next line sets and downloads the Kubernetes config in IBMCloud....
@@ -117,7 +117,7 @@ Edit the script to your needs. See comments in script.
 
 **Thanks to**
 
-Espen Blikra
+Espen Blikra (who wrote the first script)
 
 https://github.com/ahmetb
 
