@@ -16,7 +16,7 @@ case "$ENV" in
 #    instead of this export KUBECONFIG it's better to set the kubeconfig for all config files.
 #    use  this instead:  https://gist.github.com/dcberg/7e03a8363b30663ad20aeebf4a0f9663
 #    Next line sets and downloads the Kubernetes config in IBMCloud....
-    ibmcloud cs cluster-config $ENV
+    ibmcloud ks cluster-config $ENV
 #   When using zsh with ohmyzsh it's nice to have the correct project in the prompt.
 #   https://github.com/ahmetb/kubectx using the kubectx
     kubectx $ENV
