@@ -99,9 +99,9 @@ echo "Setting IMB terraform & cli to: $ENV"
 # export KUBECONFIG=~/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
 # instead of this export KUBECONFIG it's better to set the kubeconfig for all config files.
 # Setting the correct context name and be able to switch between.
-    if [ -f /home/skjar/bin/ibm-context-list ]
+    if [ -f ~/bin/ibm-context-list ]
        then
-           ibmcontext=`cat /home/skjar/bin/ibm-context-list | grep $ENV`
+           ibmcontext=`cat ~/bin/ibm-context-list | grep $ENV`
            echo $ibmcontext
     fi
 # Next line sets and downloads the Kubernetes config in IBMCloud....
