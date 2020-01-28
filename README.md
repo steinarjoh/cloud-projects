@@ -48,7 +48,8 @@ export KUBECONFIG=$(~/bin/iks-merged-config.sh)
 
 2.
 
-[IBM Cloud](https://cloud.ibm.com "Title"). Download the api-key for every account.
+[IBM Cloud](https://cloud.ibm.com "Title"). Download the api-key for every account. (IBM Cloud API Key)
+Remember to download them. You will not be able to do that afterwards)
 
 Save them in a safe place:
 ```
@@ -85,30 +86,43 @@ ENV=${1:-rtd}
 case "$ENV" in
 # edit the correct project name
 "rtd" | "dev" | "stage" | "prod")
-    echo "Setting IMB terraform & cli to: $ENV"
-# here we set the correct api-key for each project 
+echo "Setting IMB terraform & cli to: $ENV"
+# here we set the correct api-key for each project
+# softlayer: infrastructure, Bluemix: others
     export TF_VAR_ibm_bx_api_key="$(cat ~/.ssh/$ENV-ibm)"
     export TF_VAR_ibm_sl_username="$(cat ~/.ssh/$ENV-ibm-sl-username)"
     export TF_VAR_ibm_sl_api_key="$(cat ~/.ssh/$ENV-ibm-sl)"
 # we do not want any interupts about version number
     ibmcloud config --check-version=false
 # log in  using the api-key
-    ibmcloud login -g Default -r eu-de --apikey $TF_VAR_ibm_bx_api_key
-#    export KUBECONFIG=~/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
-#    instead of this export KUBECONFIG it's better to set the kubeconfig for all config files.
-#    use  this instead:  https://gist.github.com/dcberg/7e03a8363b30663ad20aeebf4a0f9663
-#    Next line sets and downloads the Kubernetes config in IBMCloud....
-    ibmcloud cs cluster-config $ENV
-#   When using zsh with ohmyzsh it's nice to have the correct project in the prompt.
-#   https://github.com/ahmetb/kubectx using the kubectx
-    kubectx $ENV
-If you need to log into the softlayer uncomment next line
-#    ibmcloud sl init -u $TF_VAR_ibm_sl_username -p $TF_VAR_ibm_sl_api_key
+    ibmcloud login -g Default -r your region --apikey $TF_VAR_ibm_bx_api_key
+# export KUBECONFIG=~/.bluemix/plugins/container-service/clusters/$ENV/kube-config-osl01-$ENV.yml
+# instead of this export KUBECONFIG it's better to set the kubeconfig for all config files.
+# Setting the correct context name and be able to switch between.
+    if [ -f /home/skjar/bin/ibm-context-list ]
+       then
+           ibmcontext=`cat /home/skjar/bin/ibm-context-list | grep $ENV`
+           echo $ibmcontext
+    fi
+# Next line sets and downloads the Kubernetes config in IBMCloud....
+    ibmcloud ks cluster-config --cluster $ENV
+# When using zsh with ohmyzsh it's nice to have the correct project in the prompt.
+# https://github.com/ahmetb/kubectx using the kubectx
+    kubectx $ibmcontext
+# Now lets set the correct password
+    if [ -n "$(terraform workspace list | grep -e rtd)" ];
+       then
+            terraform workspace select $ENV
+    fi
+# List the terraform workspace
+    terraform workspace list
+# If you need to log into the softlayer uncomment next line
+# ibmcloud sl init -u $TF_VAR_ibm_sl_username -p $TF_VAR_ibm_sl_api_key
     ;;
 *)
-    echo "Acceptable values are rtd, dev, stage, and prod"
+echo "Acceptable values are rtd, dev, stage, and prod or whatever you want"
     ;;
-esac 
+esac
 
 ```
 
@@ -126,5 +140,3 @@ https://gist.github.com/dcberg
 https://gist.github.com/robbyrussell
 
 https://gist.github.com/jonmosco
-
-
